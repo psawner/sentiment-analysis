@@ -2,32 +2,21 @@ import streamlit as st
 import numpy as np
 import pickle
 import joblib
-import nltk
 import string
 
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
 # Preprocessing setup
-stop_words = set(stopwords.words('english'))
-lemmatizer = WordNetLemmatizer()
-
 def preprocess_text(text):
     if not isinstance(text, str):
         return ""
     
     text = text.lower()
     text = text.translate(str.maketrans('', '', string.punctuation))
-    tokens = word_tokenize(text)
-    processed_tokens = [
-        lemmatizer.lemmatize(word)
-        for word in tokens if word not in stop_words
-    ]
-    return " ".join(processed_tokens)
+    
+    return text
 
 # Load model
 model = load_model("sentiment_analysis.keras")
