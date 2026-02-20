@@ -19,7 +19,11 @@ def preprocess_text(text):
     return text
 
 # Load model
-model = load_model("sentiment_analysis.keras")
+@st.cache_resource
+def load_trained_model():
+    return load_model("sentiment_analysis.keras")
+
+model = load_trained_model()
 
 # Load tokenizer
 with open("tokenizer.pkl", "rb") as f:
@@ -44,7 +48,7 @@ if st.button("Predict"):
     if user_input.strip() == "":
         st.warning("Please enter text")
     else:
-        # 🔥 SAME CLEANING AS TRAINING
+        # SAME CLEANING AS TRAINING
         cleaned_text = preprocess_text(user_input)
 
         sequence = tokenizer.texts_to_sequences([cleaned_text])
